@@ -17,6 +17,51 @@ $(document).ready( function() {
     });
   };
 
+  countGridSequences = function(gridData) {
+    var gridSequences = [];
+    for (var row in gridData) {
+      gridSequences.push(countRowSequences(gridData[row]));
+    }
+    return gridSequences;
+  }
+
+  var countRowSequences = function(rowData) {
+     var countVal = 0;
+     var seq = [];
+     for (var i in rowData) {
+
+       if (rowData[i] === 1) {
+         countVal ++;
+       } else {
+         if (countVal > 0) {
+           seq.push(countVal);
+         }
+
+         countVal = 0;
+       }
+     }
+     if (countVal > 0) {
+       seq.push(countVal);
+     }
+     countVal = 0;
+     return seq;
+  };
+
+    // Compares generated list with prescribed list
+    listsMatch = function(myArr, a) {
+      var good = true;
+      if (myArr.length === a.length) {
+        for (var blah = 0; blah < myArr.length; blah++) {
+          if (myArr[blah] !== a[blah]) {
+            good = false;
+          }
+        }
+      } else {
+        good = false;
+      }
+      return good;
+    };
+
   var drawGrid = function() {
     for (var rowIndex in gridData) {
       var row = document.createElement('div');

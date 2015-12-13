@@ -1,143 +1,66 @@
-var numlist;
-var reallist;
-var binlist = [1,1,1,1,1,1,1,0,1,1,1,0,1,0,1,1,1,1,1,1,1];
-var binmatrix = [
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1],
-  [1,1,1,1,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1]
-];
+var gridData;
+$(document).ready( function() {
 
-$(document).ready(function() {
-
-  $('#numlist').change(function (e) {
-    var numstring = $(this).val();
-    numlist = numstring.split('');
-    for (var i = 0; i < numlist.length; i++) {
-      numlist[i] = parseInt(numlist[i]);
-    }
-
-    checkMatch(numlist,reallist);
-  });
-
-var checkMatch = function(lista, listb) {
-  $('input').css('border', function() {
-    return listsMatch(lista,listb) ? '3px solid green' : '3px solid red';
-  });
-};
-
-  // Generates list from row:
-  var generateList = function(ax) {
-    var myArr = [];
-    var countval = 0;
-    for (var i = 0; i < ax.length; i++) {
-
-      if (ax[i] === 1) {
-        countval++;
-      } else {
-          if (countval > 0) {
-            myArr.push(countval);
-          }
-        countval = 0;
-      }
-    }
-    if (countval > 0) {
-      myArr.push(countval);
-    }
-    return myArr;
-  };
-
-  // Compares generated list with prescribed list
-  listsMatch = function(myArr, a) {
-    var good = true;
-    if (myArr.length === a.length) {
-      for (var blah = 0; blah < myArr.length; blah++) {
-        if (myArr[blah] !== a[blah]) {
-          good = false;
+  var loadGrid = function() {
+    $.get('data/starting-grid.dat', function(file) {
+      var rows = (file.split(/\n\r?/));
+      for (var i in rows) {
+        rows[i] = rows[i].split(' ');
+        for (var j in rows[i]) {
+          rows[i][j] = parseInt(rows[i][j]);
         }
       }
-    } else {
-      good = false;
+
+      gridData = JSON.parse(localStorage.getItem('gridData')) || rows.splice(0,25);
+      drawGrid();
+      createListeners();
+    });
+  };
+
+  var drawGrid = function() {
+    for (var rowIndex in gridData) {
+      var row = document.createElement('div');
+      $(row).addClass('row');
+      $('.grid').append(row);
+      for (var cellIndex in gridData[rowIndex]) {
+        var cell = document.createElement('div');
+        $(cell).addClass('cell');
+        $(row).append(cell);
+      }
     }
-    return good;
+
+    $('.cell').css('background-color', function(index) {
+      // var x = Math.floor(index/25);
+      // var y = index % 25
+      return gridData[getCoords(index).x][getCoords(index).y] === 1 ? 'black' : 'white';
+    });
+
   };
 
-  var createHtmlGrid = function(width, height) {
-    createHtmlRows(height);
-    createHtmlCols(width);
-    setGridColors();
-    createCellIds();
-  };
-
-  var createHtmlRows = function(height) {
-    for (var i = 0; i < height; i++) {
-      var newRow = document.createElement('div');
-      $(newRow).addClass('row');
-      $(newRow).data('binlist', binmatrix[i]);
-      $('.grid').append(newRow);
-    }
-  };
-
-  var createHtmlCols = function(width) {
-    for (var i = 0; i < width; i++) {
-      $('.row').append('<div class="cell"></div>')
-    }
-  };
-
-  var setGridColors = function(rowlist) {
+  var createListeners = function() {
     $('.cell').each( function(index) {
-      $(this).css('background-color', function() {
-        color = $(this).parent().data('binlist')[index] === 1 ? 'black' : 'white';
-        return color;
+      $(this).click(function(evt) {
+        if (gridData[getCoords(index).x][getCoords(index).y] === 1) {
+          $(this).css('background-color', 'white');
+          gridData[getCoords(index).x][getCoords(index).y] = 0;
+        } else {
+          $(this).css('background-color', 'black');
+          gridData[getCoords(index).x][getCoords(index).y] = 1;
+        }
+        saveChanges();
       });
     });
   };
 
-  var createCellIds = function() {
-    $('.cell').each( function (index) {
-      $(this).attr('id', index);
-    });
+  var saveChanges = function() {
+    localStorage.setItem('gridData', JSON.stringify(gridData));
   };
 
-  var setRealList = function() {
-    reallist = generateList(binlist);
-    $('#reallist').val(reallist);
+  var getCoords = function(index) {
+    return { x: Math.floor(index/25), y: index%25 };
+  }
 
-  };
+  loadGrid();
 
-  createHtmlGrid(binlist.length,binmatrix.length);
-  setRealList();
 
-  var toggleCell = function(id) {
-    var myBinList = $(id).parent().data('binlist');
-    myBinList[id] = myBinList[id] === 1 ? 0 : 1;
-    setGridColors();
-    setRealList();
-    checkMatch(numlist, reallist);
-  };
-
-  $('.cell').click( function(e) {
-    toggleCell(this);
-  });
 });

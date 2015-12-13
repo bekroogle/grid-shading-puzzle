@@ -17,7 +17,7 @@ $(document).ready( function() {
     });
   };
 
-  countGridSequences = function(gridData) {
+  var countGridSequences = function(gridData) {
     var gridSequences = [];
     for (var row in gridData) {
       gridSequences.push(countRowSequences(gridData[row]));
@@ -25,7 +25,18 @@ $(document).ready( function() {
     return gridSequences;
   }
 
-  var countRowSequences = function(rowData) {
+  transposeGrid = function(grid) {
+    var tGrid = [];
+    for (var i = 0; i < grid[0].length; i++) {
+      tGrid.push([]);
+      for (var row in grid) {
+        tGrid[i].push(grid[row][i]);
+      }
+    }
+    return tGrid;
+  };
+
+  countRowSequences = function(rowData) {
      var countVal = 0;
      var seq = [];
      for (var i in rowData) {
@@ -76,6 +87,14 @@ $(document).ready( function() {
       $(sequence).addClass('sequence');
       $(row).append(sequence);
     }
+    var seqRow = document.createElement('div');
+    $(seqRow).addClass('column-sequence');
+    $('.grid').append(seqRow);
+    for (var i in gridData) {
+      var seqCell = document.createElement('div');
+      $(seqCell).addClass('vertical sequence');
+      $(seqRow).append(seqCell);
+    };
     updateSequences();
 
     $('.cell').css('background-color', function(index) {
@@ -87,8 +106,24 @@ $(document).ready( function() {
   };
   var updateSequences = function() {
     $('.sequence').each( function(index) {
-      $(this).html(countRowSequences(gridData[index]));
+      var seqArr = countRowSequences(gridData[index]);
+      var seqStr = '&nbsp;';
+      for (var i in seqArr) {
+        seqStr += seqArr[i];
+        seqStr += ' ';
+      }
+
+      $(this).html(seqStr);
     });
+    $('.vertical').each( function(index) {
+      var seqArr = countRowSequences(transposeGrid(gridData)[index]);
+      var seqStr = "";
+      for (var i in seqArr) {
+        seqStr += seqArr[i];
+        seqStr += '<br />';
+      }
+      $(this).html(seqStr);
+    })
   };
 
   var createListeners = function() {

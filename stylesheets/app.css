@@ -7,9 +7,18 @@
 .cell {
   float: left;
   border: 1px solid grey;
-  width: 1em;
-  height: 1em;
+  width: 30px;
+  height: 30px;
 }
-p {
-  clear: both;
+.column-sequence {
+  clear: left;
+  width: 100%;
+}
+.vertical {
+  border: 1px solid white;
+  text-align: center;
+  display: block;
+  float: left;
+  width: 30px;
+  height: 100px;
 }

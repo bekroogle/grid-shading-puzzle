@@ -72,7 +72,11 @@ $(document).ready( function() {
         $(cell).addClass('cell');
         $(row).append(cell);
       }
+      var sequence = document.createElement('div');
+      $(sequence).addClass('sequence');
+      $(row).append(sequence);
     }
+    updateSequences();
 
     $('.cell').css('background-color', function(index) {
       // var x = Math.floor(index/25);
@@ -80,6 +84,11 @@ $(document).ready( function() {
       return gridData[getCoords(index).x][getCoords(index).y] === 1 ? 'black' : 'white';
     });
 
+  };
+  var updateSequences = function() {
+    $('.sequence').each( function(index) {
+      $(this).html(countRowSequences(gridData[index]));
+    });
   };
 
   var createListeners = function() {
@@ -92,6 +101,7 @@ $(document).ready( function() {
           $(this).css('background-color', 'black');
           gridData[getCoords(index).x][getCoords(index).y] = 1;
         }
+        updateSequences();
         saveChanges();
       });
     });

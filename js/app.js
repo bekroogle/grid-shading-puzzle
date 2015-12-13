@@ -1,4 +1,5 @@
-var gridData;
+var gridData, rowLabels, colLabels;
+
 $(document).ready( function() {
 
   var loadGrid = function() {
@@ -13,9 +14,36 @@ $(document).ready( function() {
 
       gridData = JSON.parse(localStorage.getItem('gridData')) || rows.splice(0,25);
       drawGrid();
+      loadLabels();
       createListeners();
+
     });
   };
+
+  var loadLabels = function() {
+    $.get('data/row-labels.dat', function(data) {
+      rowLabels = data.split(/\n\r?/);
+      for (var row in rowLabels) {
+        rowLabels[row] = rowLabels[row].split(' ');
+        for (var elem in rowLabels[row]) {
+          rowLabels[row][elem] = parseInt(rowLabels[row][elem]);
+        }
+      }
+      rowLabels = rowLabels.splice(0,25);
+      $.get('data/column-labels.dat', function(data) {
+        colLabels = data.split(/\n\r?/);
+        for (var col in colLabels) {
+          colLabels[col] = colLabels[col].split(' ');
+          for (var elem in colLabels[col]) {
+            colLabels[col][elem] = parseInt(colLabels[col][elem]);
+          }
+        }
+        colLabels = colLabels.splice(0,25);
+        updateSequences();
+      });
+
+    });
+  }
 
   var countGridSequences = function(gridData) {
     var gridSequences = [];
@@ -25,7 +53,7 @@ $(document).ready( function() {
     return gridSequences;
   }
 
-  transposeGrid = function(grid) {
+  var transposeGrid = function(grid) {
     var tGrid = [];
     for (var i = 0; i < grid[0].length; i++) {
       tGrid.push([]);
@@ -36,7 +64,7 @@ $(document).ready( function() {
     return tGrid;
   };
 
-  countRowSequences = function(rowData) {
+  var countRowSequences = function(rowData) {
      var countVal = 0;
      var seq = [];
      for (var i in rowData) {
@@ -58,20 +86,21 @@ $(document).ready( function() {
      return seq;
   };
 
-    // Compares generated list with prescribed list
-    listsMatch = function(myArr, a) {
-      var good = true;
-      if (myArr.length === a.length) {
-        for (var blah = 0; blah < myArr.length; blah++) {
-          if (myArr[blah] !== a[blah]) {
-            good = false;
-          }
+  var listsMatch = function(a, b) {
+    a = a || [];
+    b = b || [];
+    var good = true;
+    if (a.length === b.length) {
+      for (var i in a) {
+        if (a[i] != b[i]) {
+          good = false;
         }
-      } else {
-        good = false;
       }
-      return good;
-    };
+    } else {
+      good = false;
+    }
+    return good;
+  };
 
   var drawGrid = function() {
     for (var rowIndex in gridData) {
@@ -95,34 +124,43 @@ $(document).ready( function() {
       $(seqCell).addClass('vertical sequence');
       $(seqRow).append(seqCell);
     };
-    updateSequences();
+
 
     $('.cell').css('background-color', function(index) {
-      // var x = Math.floor(index/25);
-      // var y = index % 25
+
       return gridData[getCoords(index).x][getCoords(index).y] === 1 ? 'black' : 'white';
     });
 
   };
+
   var updateSequences = function() {
     $('.sequence').each( function(index) {
-      var seqArr = countRowSequences(gridData[index]);
+      var seqArr = rowLabels[index];
+      var realSeqArr = countRowSequences(gridData[index]);
+
       var seqStr = '&nbsp;';
       for (var i in seqArr) {
         seqStr += seqArr[i];
         seqStr += ' ';
       }
-
       $(this).html(seqStr);
+      $(this).css('color', function() {
+        return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
+      });
     });
+
     $('.vertical').each( function(index) {
-      var seqArr = countRowSequences(transposeGrid(gridData)[index]);
+      var seqArr = colLabels[index];
+      var realSeqArr = countRowSequences(transposeGrid(gridData)[index]);
       var seqStr = "";
       for (var i in seqArr) {
         seqStr += seqArr[i];
         seqStr += '<br />';
       }
       $(this).html(seqStr);
+      $(this).css('color', function() {
+        return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
+      });
     })
   };
 

@@ -5,6 +5,7 @@
   top: 0;
 }
 .grid {
+  position: relative;
   display: block;
 }
 .row {
@@ -30,4 +31,10 @@
 }
 .sequence {
   font-weight: bold;
+}
+.locked {
+  background-image: url('../resources/small-lock.png');
+  background-position: center;
+  background-repeat: no-repeat;;
+  background-size: 15px;
 }

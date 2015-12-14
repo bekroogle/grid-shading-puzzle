@@ -1,6 +1,8 @@
 var gridData, rowLabels, colLabels;
+var killClick = false;
 
 $(document).ready( function() {
+$.event.special.tap.emitTapOnTaphold = false;
 
   var loadGrid = function() {
     $.get('data/starting-grid.dat', function(file) {
@@ -69,7 +71,7 @@ $(document).ready( function() {
      var seq = [];
      for (var i in rowData) {
 
-       if (rowData[i] === 1) {
+       if (rowData[i] % 2 === 1) {
          countVal ++;
        } else {
          if (countVal > 0) {
@@ -110,6 +112,9 @@ $(document).ready( function() {
       for (var cellIndex in gridData[rowIndex]) {
         var cell = document.createElement('div');
         $(cell).addClass('cell');
+        if (gridData[rowIndex][cellIndex] > 1) {
+          $(cell).addClass('locked');
+        }
         $(row).append(cell);
       }
       var sequence = document.createElement('div');
@@ -125,10 +130,8 @@ $(document).ready( function() {
       $(seqRow).append(seqCell);
     };
 
-
     $('.cell').css('background-color', function(index) {
-
-      return gridData[getCoords(index).x][getCoords(index).y] === 1 ? 'black' : 'white';
+      return gridData[getCoords(index).x][getCoords(index).y] % 2 === 1 ? 'black' : 'white';
     });
 
   };
@@ -166,18 +169,52 @@ $(document).ready( function() {
 
   var createListeners = function() {
     $('.cell').each( function(index) {
+      $(this).on('taphold', function(evt) {
+        killClick = true;
+        toggleLocked(index);
+      });
+
+
       $(this).click(function(evt) {
-        if (gridData[getCoords(index).x][getCoords(index).y] === 1) {
-          $(this).css('background-color', 'white');
-          gridData[getCoords(index).x][getCoords(index).y] = 0;
-        } else {
-          $(this).css('background-color', 'black');
-          gridData[getCoords(index).x][getCoords(index).y] = 1;
+        if (killClick) {
+          killClick = false;
+          return;
+        }
+        if (gridData[getCoords(index).x][getCoords(index).y] < 2) {
+          if (gridData[getCoords(index).x][getCoords(index).y] === 1) {
+            $(this).css('background-color', 'white');
+            gridData[getCoords(index).x][getCoords(index).y] = 0;
+          } else {
+            $(this).css('background-color', 'black');
+            gridData[getCoords(index).x][getCoords(index).y] = 1;
+          }
         }
         updateSequences();
         saveChanges();
       });
     });
+  };
+
+  var toggleLocked = function(index) {
+    var cells = $('.cell');
+    var cell = cells[index];
+    $(cell).toggleClass('locked');
+    var x = getCoords(index).x;
+    var y = getCoords(index).y;
+    switch(gridData[x][y]) {
+      case 0: gridData[x][y] = 2;
+              saveChanges();
+              break;
+      case 1: gridData[x][y] = 3;
+              saveChanges();
+              break;
+      case 2: gridData[x][y] = 0;
+              saveChanges();
+              break;
+      case 3: gridData[x][y] = 1;
+              saveChanges();
+              break;
+    }
   };
 
   var saveChanges = function() {
@@ -189,6 +226,4 @@ $(document).ready( function() {
   }
 
   loadGrid();
-
-
 });

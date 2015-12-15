@@ -4,6 +4,11 @@
   right: 0;
   top: 0;
 }
+.controls {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
 .grid {
   position: relative;
   display: block;

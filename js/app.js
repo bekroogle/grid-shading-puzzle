@@ -168,26 +168,29 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var createListeners = function() {
+    $('#undo-btn').click(function(e) {
+      e.preventDefault();
+      undo();
+    });
+
+    $('#redo-btn').click(function(e) {
+      e.preventDefault();
+      redo();
+    });
     $('.cell').each( function(index) {
       $(this).on('taphold', function(evt) {
         killClick = true;
         toggleLocked(index);
       });
 
-
       $(this).click(function(evt) {
         if (killClick) {
           killClick = false;
           return;
         }
-        if (gridData[getCoords(index).x][getCoords(index).y] < 2) {
-          if (gridData[getCoords(index).x][getCoords(index).y] === 1) {
-            $(this).css('background-color', 'white');
-            gridData[getCoords(index).x][getCoords(index).y] = 0;
-          } else {
-            $(this).css('background-color', 'black');
-            gridData[getCoords(index).x][getCoords(index).y] = 1;
-          }
+        if (isUnlocked(index)) {
+          toggleCell(index);
+
         }
         updateSequences();
         saveChanges();
@@ -195,10 +198,25 @@ $.event.special.tap.emitTapOnTaphold = false;
     });
   };
 
+  var toggleCell = function(index, isUndoAction) {
+      savePrevCellState(index, isUndoAction);
+
+    if (cellContents(index) === 1) {
+      $('.cell').eq(index).css('background-color', 'white');
+      cellContents(index, 0)
+    } else {
+      $('.cell').eq(index).css('background-color', 'black');
+      cellContents(index, 1);
+    }
+  };
+
+  var isUnlocked = function(index) {
+    return cellContents(index) < 2;
+  };
+
   var toggleLocked = function(index) {
-    var cells = $('.cell');
-    var cell = cells[index];
-    $(cell).toggleClass('locked');
+    savePrevCellState(index);
+    var cells = $('.cell').eq(index).toggleClass('locked');
     var x = getCoords(index).x;
     var y = getCoords(index).y;
     switch(gridData[x][y]) {
@@ -217,13 +235,48 @@ $.event.special.tap.emitTapOnTaphold = false;
     }
   };
 
+  var savePrevCellState = function(index, isUndoAction) {
+    var stackName = isUndoAction ? 'redoStack' : 'undoStack';
+    var stack = JSON.parse(localStorage.getItem(stackName)) || [];
+    stack.push({'index': index, 'value': cellContents(index)});
+    localStorage.setItem(stackName, JSON.stringify(stack));
+  };
+
+  var undo = function() {
+    stackDo('undoStack');
+  };
+
+  var redo = function() {
+    stackDo('redoStack');
+  }
+
+  var stackDo = function(stackName) {
+    var stack = JSON.parse(localStorage.getItem(stackName)) || [];
+    var prevCell = stack.pop();
+    if (!isUnlocked(prevCell.index)) {
+      toggleLocked(prevCell.index, stackName === 'undoStack');
+    } else {
+      toggleCell(prevCell.index, stackName === 'undoStack');
+    }
+    localStorage.setItem(stackName, JSON.stringify(stack));
+  };
+
   var saveChanges = function() {
     localStorage.setItem('gridData', JSON.stringify(gridData));
   };
 
   var getCoords = function(index) {
     return { x: Math.floor(index/25), y: index%25 };
-  }
+  };
+
+  var cellContents = function(index, value) {
+    if (value !== undefined) {
+      gridData[getCoords(index).x][getCoords(index).y] = value;
+    } else {
+      return gridData[getCoords(index).x][getCoords(index).y];
+    }
+
+  };
 
   loadGrid();
 });

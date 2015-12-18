@@ -168,6 +168,7 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var createListeners = function() {
+
     $('#undo-btn').click(function(e) {
       e.preventDefault();
       undo();
@@ -179,9 +180,9 @@ $.event.special.tap.emitTapOnTaphold = false;
     });
     $('.cell').each( function(index) {
       $(this).on('taphold', function(evt) {
-        killClick = true;
-        toggleLocked(index);
-      });
+          killClick = true;
+          toggleLocked(index);
+        });
 
       $(this).click(function(evt) {
         if (killClick) {
@@ -213,7 +214,9 @@ $.event.special.tap.emitTapOnTaphold = false;
   var isUnlocked = function(index) {
     return cellContents(index) < 2;
   };
-
+  var isLocked = function(index) {
+     return !isUnlocked(index);
+  };
   var toggleLocked = function(index) {
     savePrevCellState(index);
     var cells = $('.cell').eq(index).toggleClass('locked');
@@ -236,10 +239,18 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var savePrevCellState = function(index, isUndoAction) {
+    initLocalStorage('undoStack');
+    initLocalStorage('redoStack');
+
     var stackName = isUndoAction ? 'redoStack' : 'undoStack';
-    var stack = JSON.parse(localStorage.getItem(stackName)) || [];
+    var stack = JSON.parse(localStorage.getItem(stackName));
     stack.push({'index': index, 'value': cellContents(index)});
     localStorage.setItem(stackName, JSON.stringify(stack));
+  };
+  var initLocalStorage = function(itemName) {
+    if (!localStorage.hasOwnProperty(itemName)) {
+      localStorage.setItem(itemName, '[]');
+    }
   };
 
   var undo = function() {
@@ -251,9 +262,9 @@ $.event.special.tap.emitTapOnTaphold = false;
   }
 
   var stackDo = function(stackName) {
-    var stack = JSON.parse(localStorage.getItem(stackName)) || [];
+    var stack = JSON.parse(localStorage.getItem(stackName));
     var prevCell = stack.pop();
-    if (!isUnlocked(prevCell.index)) {
+    if (isLocked(prevCell.index)) {
       toggleLocked(prevCell.index, stackName === 'undoStack');
     } else {
       toggleCell(prevCell.index, stackName === 'undoStack');
@@ -277,6 +288,14 @@ $.event.special.tap.emitTapOnTaphold = false;
     }
 
   };
+  $('.controlsa').attr('width', window.innerWidth / 2);
 
-  loadGrid();
+  var init = function() {
+    initLocalStorage('undoStack');
+    initLocalStorage('redoStack');
+    loadGrid();
+  };
+
+  init();
+
 });

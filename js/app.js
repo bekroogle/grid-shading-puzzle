@@ -2,7 +2,7 @@ var gridData, rowLabels, colLabels;
 var killClick = false;
 
 $(document).ready( function() {
-$.event.special.tap.emitTapOnTaphold = false;
+  $.event.special.tap.emitTapOnTaphold = false;
 
   var loadGrid = function() {
     $.get('data/starting-grid.dat', function(file) {
@@ -166,9 +166,41 @@ $.event.special.tap.emitTapOnTaphold = false;
       });
     })
   };
+  var clearOldPuzzle = function() {
+    gridData = [];
+    clearGrid();
 
+  };
+  var clearGrid = function() {
+    $('.grid').empty();
+  };
+
+  var createNewGridData = function(size) {
+    for (var i = 0; i < size; i++) {
+      var currentRow = [];
+      for (var j = 0; j < size; j++) {
+        var rndVal = Math.random() >= 0.5 ? 1 : 0;
+        currentRow.push(rndVal);
+      }
+      gridData.push(currentRow);
+    }
+  };
+
+  var createNewPuzzle = function(size) {
+    clearOldPuzzle();
+    createNewGridData(size);
+
+  };
   var createListeners = function() {
-
+    $('#toggle-heading-btn').click(function(e) {
+      e.preventDefault();
+      $('.heading').toggleClass('hidden');
+    });
+    $('#new-puzzle-btn').click( function(e) {
+      e.preventDefault();
+      var size = prompt("Size: ");
+      createNewPuzzle(size);
+    });
     $('#undo-btn').click(function(e) {
       e.preventDefault();
       undo();

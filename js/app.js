@@ -167,13 +167,15 @@ $(document).ready( function() {
       });
     })
   };
+
   var clearOldPuzzle = function() {
     gridData = [];
-    clearGrid();
+    removeGrid();
     rowLabels = [];
     colLabels = [];
   };
-  var clearGrid = function() {
+
+  var removeGrid = function() {
     $('.grid').empty();
   };
 
@@ -199,27 +201,38 @@ $(document).ready( function() {
 
     updateSequences();
 
+
+    clearGrid();
+    removeGrid();
+    drawGrid();
+    updateSequences();
+
+
+    createCellListeners();
+  };
+  var clearGrid = function() {
     for (var i in gridData) {
       for (var j in gridData[i]) {
         gridData[i][j] = 0;
       }
     }
-    clearGrid();
-    drawGrid();
-    updateSequences();
-
-
-    createListeners();
   };
   var createListeners = function() {
     $('#toggle-heading-btn').click(function(e) {
       e.preventDefault();
       $('.heading').toggleClass('hidden');
     });
+
     $('#new-puzzle-btn').click( function(e) {
       e.preventDefault();
       var size = prompt("Size: ");
       createNewPuzzle(size);
+    });
+    $('#clear-btn').click( function(e) {
+      e.preventDefault();
+      clearGrid();
+      drawGrid();
+      updateSequences();
     });
     $('#undo-btn').click(function(e) {
       e.preventDefault();
@@ -230,6 +243,10 @@ $(document).ready( function() {
       e.preventDefault();
       redo();
     });
+
+    createCellListeners();
+  };
+  var createCellListeners = function() {
     $('.cell').each( function(index) {
       $(this).on('taphold', function(evt) {
           killClick = true;
@@ -248,8 +265,8 @@ $(document).ready( function() {
         saveChanges();
       });
     });
-  };
 
+  };
   var toggleCell = function(index, isUndoAction) {
       savePrevCellState(index, isUndoAction);
 
@@ -265,9 +282,11 @@ $(document).ready( function() {
   var isUnlocked = function(index) {
     return cellContents(index) < 2;
   };
+
   var isLocked = function(index) {
      return !isUnlocked(index);
   };
+
   var toggleLocked = function(index) {
     savePrevCellState(index);
     var cells = $('.cell').eq(index).toggleClass('locked');
@@ -298,6 +317,7 @@ $(document).ready( function() {
     stack.push({'index': index, 'value': cellContents(index)});
     localStorage.setItem(stackName, JSON.stringify(stack));
   };
+
   var initLocalStorage = function(itemName) {
     if (!localStorage.hasOwnProperty(itemName)) {
       localStorage.setItem(itemName, '[]');

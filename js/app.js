@@ -46,7 +46,7 @@ $(document).ready( function() {
       });
 
     });
-  }
+  };
 
   var countGridSequences = function(gridData) {
     var gridSequences = [];
@@ -129,7 +129,7 @@ $(document).ready( function() {
       var seqCell = document.createElement('div');
       $(seqCell).addClass('vertical sequence');
       $(seqRow).append(seqCell);
-    };
+    }
 
     $('.cell').css('background-color', function(index) {
       return gridData[getCoords(index).x][getCoords(index).y] % 2 === 1 ? 'black' : 'white';
@@ -165,7 +165,7 @@ $(document).ready( function() {
       $(this).css('color', function() {
         return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
       });
-    })
+    });
   };
 
   var clearOldPuzzle = function() {
@@ -272,7 +272,7 @@ $(document).ready( function() {
 
     if (cellContents(index) === 1) {
       $('.cell').eq(index).css('background-color', 'white');
-      cellContents(index, 0)
+      cellContents(index, 0);
     } else {
       $('.cell').eq(index).css('background-color', 'black');
       cellContents(index, 1);
@@ -330,7 +330,7 @@ $(document).ready( function() {
 
   var redo = function() {
     stackDo('redoStack');
-  }
+  };
 
   var stackDo = function(stackName) {
     var stack = JSON.parse(localStorage.getItem(stackName));

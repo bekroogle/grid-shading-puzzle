@@ -1,10 +1,11 @@
-var gridData, rowLabels, colLabels;
+var solution, gridData, rowLabels, colLabels, PUZZLE_SIZE;
 var killClick = false;
 
 $(document).ready( function() {
   $.event.special.tap.emitTapOnTaphold = false;
-
+  $.mobile.loading().hide();
   var loadGrid = function() {
+    PUZZLE_SIZE = 25;
     $.get('data/starting-grid.dat', function(file) {
       var rows = (file.split(/\n\r?/));
       for (var i in rows) {
@@ -53,7 +54,7 @@ $(document).ready( function() {
       gridSequences.push(countRowSequences(gridData[row]));
     }
     return gridSequences;
-  }
+  };
 
   var transposeGrid = function(grid) {
     var tGrid = [];
@@ -169,7 +170,8 @@ $(document).ready( function() {
   var clearOldPuzzle = function() {
     gridData = [];
     clearGrid();
-
+    rowLabels = [];
+    colLabels = [];
   };
   var clearGrid = function() {
     $('.grid').empty();
@@ -188,8 +190,26 @@ $(document).ready( function() {
 
   var createNewPuzzle = function(size) {
     clearOldPuzzle();
+    PUZZLE_SIZE = size;
     createNewGridData(size);
+    drawGrid();
+    solution = gridData;
+    rowLabels = countGridSequences(solution);
+    colLabels = countGridSequences(transposeGrid(solution));
 
+    updateSequences();
+
+    for (var i in gridData) {
+      for (var j in gridData[i]) {
+        gridData[i][j] = 0;
+      }
+    }
+    clearGrid();
+    drawGrid();
+    updateSequences();
+
+
+    createListeners();
   };
   var createListeners = function() {
     $('#toggle-heading-btn').click(function(e) {
@@ -223,7 +243,6 @@ $(document).ready( function() {
         }
         if (isUnlocked(index)) {
           toggleCell(index);
-
         }
         updateSequences();
         saveChanges();
@@ -309,7 +328,7 @@ $(document).ready( function() {
   };
 
   var getCoords = function(index) {
-    return { x: Math.floor(index/25), y: index%25 };
+    return { x: Math.floor(index/PUZZLE_SIZE), y: index%PUZZLE_SIZE };
   };
 
   var cellContents = function(index, value) {

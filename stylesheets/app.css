@@ -15,10 +15,28 @@
   top: 0;
 }
 .controls {
-  display: block;
-  clear: both;
+  position: fixed;
+  top: 0;
+  left: 8px;
+  margin-top: 0;
+  margin-left: 0;
+  height: 3rem;
+  width: 100%;
+  z-index: 1;
+  border-bottom: 1px solid black;
+  background-color: white;
+}
+ul {
+  display: inline-block;
+}
+ul li {
+  display: inline-block;
+}
+label {
+  float: right;
 }
 .grid {
+  top: 3rem;
   position: relative;
   display: block;
 }
@@ -47,4 +65,7 @@
   float: left;
   width: 30px;
   height: 100px;
+}
+.content {
+  margin-top: 3rem;
 }

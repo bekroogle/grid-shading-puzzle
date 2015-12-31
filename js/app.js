@@ -288,7 +288,6 @@ $.event.special.tap.emitTapOnTaphold = false;
     }
 
   };
-  $('.controlsa').attr('width', window.innerWidth / 2);
 
   var init = function() {
     initLocalStorage('undoStack');

@@ -4,15 +4,9 @@
   right: 0;
   top: 0;
 }
-#undo-btn {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-}
-#redo-btn {
-  position: fixed;
-  right: 0;
-  bottom: 0;
+.controls {
+  display: block;
+  clear: both;
 }
 .grid {
   position: relative;

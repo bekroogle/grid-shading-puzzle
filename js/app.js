@@ -6,15 +6,8 @@ $.event.special.tap.emitTapOnTaphold = false;
 
   var loadGrid = function() {
     $.get('data/starting-grid.dat', function(file) {
-      var rows = (file.split(/\n\r?/));
-      for (var i in rows) {
-        rows[i] = rows[i].split(' ');
-        for (var j in rows[i]) {
-          rows[i][j] = parseInt(rows[i][j]);
-        }
-      }
 
-      gridData = JSON.parse(localStorage.getItem('gridData')) || rows.splice(0,25);
+      gridData = JSON.parse(localStorage.getItem('gridData')) || JSON.parse(file);
       drawGrid();
       loadLabels();
       createListeners();

@@ -37,6 +37,9 @@
 .sequence {
   font-weight: bold;
 }
+.ui-loader {
+  display: none !important;
+}
 .vertical {
   border: 1px solid white;
   text-align: center;

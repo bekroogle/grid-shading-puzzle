@@ -16,14 +16,13 @@
 }
 .controls {
   position: fixed;
-  top: 0;
-  left: 8px;
-  margin-top: 0;
-  margin-left: 0;
+  bottom: 0;
+  right: 0.5rem;
+  left: auto;
   height: 3rem;
   width: 100%;
   z-index: 1;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
   background-color: white;
 }
 ul {
@@ -36,7 +35,6 @@ label {
   float: right;
 }
 .grid {
-  top: 3rem;
   position: relative;
   display: block;
 }
@@ -65,7 +63,4 @@ label {
   float: left;
   width: 30px;
   height: 100px;
-}
-.content {
-  margin-top: 3rem;
 }

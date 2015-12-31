@@ -27,14 +27,10 @@
           %li
             When you've met the requirements for a row or column, the label will turn green. When all rows and columns are green, you've won!
       .controls
-        %a#undo-btn{ href: '#' }
-          %img{ src: 'resources/undo-arrow.png' }
-          Undo
-        %a#redo-btn{ href: '#' }
-          %img{ src: 'resources/redo-arrow.png' }
-          Redo
+        %a.btn#undo-btn{ href: '#' } Undo
+        &nbsp;|&nbsp;
+        %a.btn#redo-btn{ href: '#' } Redo
       .grid{ oncontextmenu: 'return false' }
-
       %script{ src: 'https://code.jquery.com/jquery-2.1.4.js' }
       %script{ src: 'https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js' }
       %script{ src: 'js/app.js' }

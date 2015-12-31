@@ -1,8 +1,9 @@
 .cell {
   float: left;
-  border: 1px solid grey;
   width: 30px;
   height: 30px;
+  border: 1px solid grey;
+  border-radius: 3px;
 }
 .column-sequence {
   clear: left;

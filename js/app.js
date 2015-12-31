@@ -161,7 +161,6 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var createListeners = function() {
-
     $('#undo-btn').click(function(e) {
       e.preventDefault();
       undo();
@@ -171,6 +170,20 @@ $.event.special.tap.emitTapOnTaphold = false;
       e.preventDefault();
       redo();
     });
+
+    $('#help-btn').click( function(e) {
+      e.preventDefault();
+      toggleHelpHeading();
+    });
+
+    $('#dont-follow').click( function(e) {
+      if ($('#dont-follow:checked').length > 0) {
+        $('.controls').css('position', 'absolute');
+      } else {
+        $('.controls').css('position', 'fixed');
+      }
+    });
+
     $('.cell').each( function(index) {
       $(this).on('taphold', function(evt) {
           killClick = true;
@@ -192,6 +205,19 @@ $.event.special.tap.emitTapOnTaphold = false;
     });
   };
 
+  var toggleHelpHeading = function() {
+    $('.heading').toggleClass('hidden');
+    toggleHelpButtonText();
+  };
+
+  var toggleHelpButtonText = function() {
+    if ($('.heading').hasClass('hidden'))  {
+      $('#help-btn').html('Help')
+    } else {
+      $('#help-btn').html('Hide help')
+    }
+  };
+
   var toggleCell = function(index, isUndoAction) {
       savePrevCellState(index, isUndoAction);
 
@@ -207,9 +233,11 @@ $.event.special.tap.emitTapOnTaphold = false;
   var isUnlocked = function(index) {
     return cellContents(index) < 2;
   };
+
   var isLocked = function(index) {
      return !isUnlocked(index);
   };
+
   var toggleLocked = function(index) {
     savePrevCellState(index);
     var cells = $('.cell').eq(index).toggleClass('locked');
@@ -240,6 +268,7 @@ $.event.special.tap.emitTapOnTaphold = false;
     stack.push({'index': index, 'value': cellContents(index)});
     localStorage.setItem(stackName, JSON.stringify(stack));
   };
+
   var initLocalStorage = function(itemName) {
     if (!localStorage.hasOwnProperty(itemName)) {
       localStorage.setItem(itemName, '[]');
@@ -281,7 +310,6 @@ $.event.special.tap.emitTapOnTaphold = false;
     }
 
   };
-  $('.controlsa').attr('width', window.innerWidth / 2);
 
   var init = function() {
     initLocalStorage('undoStack');

@@ -8,7 +8,29 @@
   </head>
   <body>
     <div class='container'>
-      <div class='heading'>
+      <div class='controls'>
+        <ul>
+          <li>
+            <a class='btn' href='#' id='undo-btn'>Undo</a>
+          </li>
+          <li>&nbsp;|&nbsp;</li>
+          <li>
+            <a class='btn' href='#' id='redo-btn'>Redo</a>
+          </li>
+          <li>&nbsp;|&nbsp;</li>
+          <li>
+            <a class='btn' href='#' id='help-btn'>Help</a>
+          </li>
+          <li>&nbsp;|&nbsp;</li>
+          <li>
+            <label for='dont-follow'>
+              Don't follow me!
+            </label>
+            <input id='dont-follow' type='checkbox' value='no'>
+          </li>
+        </ul>
+      </div>
+      <div class='heading hidden content'>
         <div class='h2'>GCHQ Director's Challenge Christmas Card Puzzle</div>
         <p>
           This is the grid shading puzzle that was printed on Christmas cards sent out for the 2015 season by Britain's intelligence agency, GCHQ.
@@ -39,14 +61,6 @@
         </ul>
       </div>
       <div class='grid' oncontextmenu='return false'></div>
-      <div class='controls'>
-        <a href='#' id='undo-btn'>
-          <img src='resources/undo-arrow.png'>
-        </a>
-        <a href='#' id='redo-btn'>
-          <img src='resources/redo-arrow.png'>
-        </a>
-      </div>
       <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
       <script src='https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js'></script>
       <script src='js/app.js'></script>

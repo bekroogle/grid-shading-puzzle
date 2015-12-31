@@ -1,26 +1,3 @@
-.container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-}
-#undo-btn {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-}
-#redo-btn {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-}
-.grid {
-  position: relative;
-  display: block;
-}
-.row {
-  clear: left;
-}
 .cell {
   float: left;
   border: 1px solid grey;
@@ -31,6 +8,56 @@
   clear: left;
   width: 100%;
 }
+.container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.controls {
+  position: fixed;
+  top: 0;
+  left: 8px;
+  margin-top: 0;
+  margin-left: 0;
+  height: 3rem;
+  width: 100%;
+  z-index: 1;
+  border-bottom: 1px solid black;
+  background-color: white;
+}
+ul {
+  display: inline-block;
+}
+ul li {
+  display: inline-block;
+}
+label {
+  float: right;
+}
+.grid {
+  top: 3rem;
+  position: relative;
+  display: block;
+}
+.hidden {
+  display: none;
+}
+.locked {
+  background-image: url('../resources/small-lock.png');
+  background-position: center;
+  background-repeat: no-repeat;;
+  background-size: 15px;
+}
+.row {
+  clear: left;
+}
+.sequence {
+  font-weight: bold;
+}
+.ui-loader {
+  display: none !important;
+}
 .vertical {
   border: 1px solid white;
   text-align: center;
@@ -39,12 +66,6 @@
   width: 30px;
   height: 100px;
 }
-.sequence {
-  font-weight: bold;
-}
-.locked {
-  background-image: url('../resources/small-lock.png');
-  background-position: center;
-  background-repeat: no-repeat;;
-  background-size: 15px;
+.content {
+  margin-top: 3rem;
 }

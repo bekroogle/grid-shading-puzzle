@@ -183,14 +183,6 @@ $.event.special.tap.emitTapOnTaphold = false;
       toggleHelpHeading();
     });
 
-    $('#dont-follow').click( function(e) {
-      if ($('#dont-follow:checked').length > 0) {
-        $('.controls').css('position', 'absolute');
-      } else {
-        $('.controls').css('position', 'fixed');
-      }
-    });
-
     $('.cell').each( function(index) {
       $(this).on('taphold', function(evt) {
           killClick = true;

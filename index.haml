@@ -5,22 +5,17 @@
       GCHQ Director's Challenge Christmas Card Puzzle
     <link rel="stylesheet" type="text/css" href="stylesheets/app.css" />
   %body
+    .controls
+      %ul
+        %li
+          %a.btn#undo-btn{ href: '#' } Undo
+        %li &nbsp;|&nbsp;
+        %li
+          %a.btn#redo-btn{ href: '#' } Redo
+        %li &nbsp;|&nbsp;
+        %li
+          %a.btn#help-btn{ href: '#' } Help
     .container
-      .controls
-        %ul
-          %li
-            %a.btn#undo-btn{ href: '#' } Undo
-          %li &nbsp;|&nbsp;
-          %li
-            %a.btn#redo-btn{ href: '#' } Redo
-          %li &nbsp;|&nbsp;
-          %li
-            %a.btn#help-btn{ href: '#' } Help
-          %li &nbsp;|&nbsp;
-          %li
-            %label{ for: 'dont-follow' }
-              Don't follow me!
-            %input#dont-follow{ type: 'checkbox', value: 'no' }
       .heading.hidden.content
         .h2 GCHQ Director's Challenge Christmas Card Puzzle
         %p

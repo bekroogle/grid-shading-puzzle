@@ -23,27 +23,13 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var loadLabels = function() {
-    $.get('data/row-labels.dat', function(data) {
-      rowLabels = data.split(/\n\r?/);
-      for (var row in rowLabels) {
-        rowLabels[row] = rowLabels[row].split(' ');
-        for (var elem in rowLabels[row]) {
-          rowLabels[row][elem] = parseInt(rowLabels[row][elem]);
-        }
-      }
-      rowLabels = rowLabels.splice(0,25);
-      $.get('data/column-labels.dat', function(data) {
-        colLabels = data.split(/\n\r?/);
-        for (var col in colLabels) {
-          colLabels[col] = colLabels[col].split(' ');
-          for (var elem in colLabels[col]) {
-            colLabels[col][elem] = parseInt(colLabels[col][elem]);
-          }
-        }
-        colLabels = colLabels.splice(0,25);
+    $.get('data/row-labels.dat', function(rowData) {
+      rowLabels = JSON.parse(rowData);
+
+      $.get('data/column-labels.dat', function(colData) {
+        colLabels = JSON.parse(colData)
         updateSequences();
       });
-
     });
   }
 

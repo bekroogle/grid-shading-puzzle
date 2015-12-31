@@ -168,7 +168,6 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var createListeners = function() {
-
     $('#undo-btn').click(function(e) {
       e.preventDefault();
       undo();
@@ -178,6 +177,12 @@ $.event.special.tap.emitTapOnTaphold = false;
       e.preventDefault();
       redo();
     });
+
+    $('#help-btn').click( function(e) {
+      e.preventDefault();
+      toggleHelpHeading();
+    });
+
     $('.cell').each( function(index) {
       $(this).on('taphold', function(evt) {
           killClick = true;
@@ -197,6 +202,19 @@ $.event.special.tap.emitTapOnTaphold = false;
         saveChanges();
       });
     });
+  };
+
+  var toggleHelpHeading = function() {
+    $('.heading').toggleClass('hidden');
+    toggleHelpButtonText();
+  };
+
+  var toggleHelpButtonText = function() {
+    if ($('.heading').hasClass('hidden'))  {
+      $('#help-btn').html('Help')
+    } else {
+      $('#help-btn').html('Hide help')
+    }
   };
 
   var toggleCell = function(index, isUndoAction) {

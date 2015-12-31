@@ -1,3 +1,13 @@
+.cell {
+  float: left;
+  border: 1px solid grey;
+  width: 30px;
+  height: 30px;
+}
+.column-sequence {
+  clear: left;
+  width: 100%;
+}
 .container {
   position: absolute;
   left: 0;
@@ -12,18 +22,20 @@
   position: relative;
   display: block;
 }
+.hidden {
+  display: none;
+}
+.locked {
+  background-image: url('../resources/small-lock.png');
+  background-position: center;
+  background-repeat: no-repeat;;
+  background-size: 15px;
+}
 .row {
   clear: left;
 }
-.cell {
-  float: left;
-  border: 1px solid grey;
-  width: 30px;
-  height: 30px;
-}
-.column-sequence {
-  clear: left;
-  width: 100%;
+.sequence {
+  font-weight: bold;
 }
 .vertical {
   border: 1px solid white;
@@ -32,13 +44,4 @@
   float: left;
   width: 30px;
   height: 100px;
-}
-.sequence {
-  font-weight: bold;
-}
-.locked {
-  background-image: url('../resources/small-lock.png');
-  background-position: center;
-  background-repeat: no-repeat;;
-  background-size: 15px;
 }

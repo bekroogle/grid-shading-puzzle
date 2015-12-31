@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/app.css" />
   %body
     .container
-      .heading
+      .heading.hidden
         .h2 GCHQ Director's Challenge Christmas Card Puzzle
         %p
           This is the grid shading puzzle that was printed on Christmas cards sent out for the 2015 season by Britain's intelligence agency, GCHQ.
@@ -30,6 +30,8 @@
         %a.btn#undo-btn{ href: '#' } Undo
         &nbsp;|&nbsp;
         %a.btn#redo-btn{ href: '#' } Redo
+        &nbsp;|&nbsp;
+        %a.btn#help-btn{ href: '#' } Help
       .grid{ oncontextmenu: 'return false' }
       %script{ src: 'https://code.jquery.com/jquery-2.1.4.js' }
       %script{ src: 'https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js' }

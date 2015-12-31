@@ -214,9 +214,11 @@ $.event.special.tap.emitTapOnTaphold = false;
   var isUnlocked = function(index) {
     return cellContents(index) < 2;
   };
+
   var isLocked = function(index) {
      return !isUnlocked(index);
   };
+
   var toggleLocked = function(index) {
     savePrevCellState(index);
     var cells = $('.cell').eq(index).toggleClass('locked');
@@ -247,6 +249,7 @@ $.event.special.tap.emitTapOnTaphold = false;
     stack.push({'index': index, 'value': cellContents(index)});
     localStorage.setItem(stackName, JSON.stringify(stack));
   };
+
   var initLocalStorage = function(itemName) {
     if (!localStorage.hasOwnProperty(itemName)) {
       localStorage.setItem(itemName, '[]');

@@ -5,21 +5,21 @@ $(document).ready( function() {
 $.event.special.tap.emitTapOnTaphold = false;
 
   var loadGrid = function() {
-    $.get('data/starting-grid.dat', function(file) {
-      var rows = (file.split(/\n\r?/));
-      for (var i in rows) {
-        rows[i] = rows[i].split(' ');
-        for (var j in rows[i]) {
-          rows[i][j] = parseInt(rows[i][j]);
-        }
-      }
+    if (localStorage.hasOwnProperty('gridData')) {
+      gridData = JSON.parse(localStorage.getItem('gridData'));
+      doRest();
+    } else {
+      $.get('data/starting-grid.dat', function(file) {
+        gridData = JSON.parse(file);
+        doRest();
+      });
+    }
+  };
 
-      gridData = JSON.parse(localStorage.getItem('gridData')) || rows.splice(0,25);
+  var doRest = function() {
       drawGrid();
       loadLabels();
       createListeners();
-
-    });
   };
 
   var loadLabels = function() {

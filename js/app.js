@@ -30,36 +30,33 @@ $.event.special.tap.emitTapOnTaphold = false;
 
   var drawRows = function() {
     for (var rowIndex in gridData) {
-      var row = document.createElement('div');
-      $(row).addClass('row');
-      $('.grid').append(row);
+      var row = addElem('row', $('.grid'));
       drawCells(row, rowIndex);
       addRowSequences(row);
     }
   };
 
+  var addElem = function(elemName, parent) {
+    var elem = document.createElement('div');
+    $(elem).addClass(elemName);
+    $(parent).append(elem);
+    return elem;
+  }
+
   var drawCells = function(row, rowIndex) {
     for (var cellIndex in gridData[rowIndex]) {
-      var cell = document.createElement('div');
-      $(cell).addClass('cell');
-      $(row).append(cell);
+      var cell = addElem('cell', row);
     }
   };
 
   var addRowSequences = function(row) {
-    var sequence = document.createElement('div');
-    $(sequence).addClass('sequence');
-    $(row).append(sequence);
+    addElem('sequence', row);
   };
 
   var addColumnSequences = function() {
-    var seqRow = document.createElement('div');
-    $(seqRow).addClass('column-sequence');
-    $('.grid').append(seqRow);
+    var seqRow = addElem('column-sequence', $('.grid'));
     for (var i in gridData) {
-      var seqCell = document.createElement('div');
-      $(seqCell).addClass('vertical sequence');
-      $(seqRow).append(seqCell);
+      var seqCell = addElem('vertical sequence', seqRow);
     }
   };
 

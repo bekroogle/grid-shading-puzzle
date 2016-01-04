@@ -129,8 +129,9 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var listsMatch = function(a, b) {
-    a = a || [];
-    b = b || [];
+    a = a || []; // This method is sometimes called before a is defined.
+    b = b || []; // This method is sometimes called before b is defined.
+
     var good = true;
     if (a.length === b.length) {
       for (var i in a) {
@@ -176,7 +177,7 @@ $.event.special.tap.emitTapOnTaphold = false;
       setNumberColor(this, seqArr, realSeqArr);
     });
   };
-  
+
   var setNumberColor = function(ctx, seqArr, realSeqArr) {
     $(ctx).css('color', function() {
       return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';

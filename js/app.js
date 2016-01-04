@@ -112,14 +112,12 @@ $.event.special.tap.emitTapOnTaphold = false;
      var countVal = 0;
      var seq = [];
      for (var i in rowData) {
-
        if (rowData[i] % 2 === 1) {
          countVal ++;
        } else {
          if (countVal > 0) {
            seq.push(countVal);
          }
-
          countVal = 0;
        }
      }
@@ -150,16 +148,13 @@ $.event.special.tap.emitTapOnTaphold = false;
     $('.sequence').each( function(index) {
       var seqArr = rowLabels[index];
       var realSeqArr = countRowSequences(gridData[index]);
-
       var seqStr = '&nbsp;';
       for (var i in seqArr) {
         seqStr += seqArr[i];
         seqStr += ' ';
       }
       $(this).html(seqStr);
-      $(this).css('color', function() {
-        return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
-      });
+      setNumberColor(this, seqArr, realSeqArr);
     });
 
     $('.vertical').each( function(index) {
@@ -171,9 +166,13 @@ $.event.special.tap.emitTapOnTaphold = false;
         seqStr += '<br />';
       }
       $(this).html(seqStr);
-      $(this).css('color', function() {
-        return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
-      });
+      setNumberColor(this, seqArr, realSeqArr);
+    });
+  };
+
+  var setNumberColor = function(ctx, seqArr, realSeqArr) {
+    $(ctx).css('color', function() {
+      return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
     });
   };
 

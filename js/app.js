@@ -164,6 +164,11 @@ $.event.special.tap.emitTapOnTaphold = false;
       redo();
     });
 
+    $('#reset-btn').click(function(e) {
+      e.preventDefault();
+      reset();
+    });
+
     $('#help-btn').click( function(e) {
       e.preventDefault();
       toggleHelpHeading();
@@ -300,6 +305,11 @@ $.event.special.tap.emitTapOnTaphold = false;
     initLocalStorage('undoStack');
     initLocalStorage('redoStack');
     loadGrid();
+  };
+
+  var reset = function() {
+    localStorage.removeItem('gridData');
+    document.location.reload();
   };
 
   init();

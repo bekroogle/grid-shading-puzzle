@@ -27,11 +27,11 @@ $.event.special.tap.emitTapOnTaphold = false;
       rowLabels = JSON.parse(rowData);
 
       $.get('data/column-labels.dat', function(colData) {
-        colLabels = JSON.parse(colData)
+        colLabels = JSON.parse(colData);
         updateSequences();
       });
     });
-  }
+  };
 
   var countGridSequences = function(gridData) {
     var gridSequences = [];
@@ -39,7 +39,7 @@ $.event.special.tap.emitTapOnTaphold = false;
       gridSequences.push(countRowSequences(gridData[row]));
     }
     return gridSequences;
-  }
+  };
 
   var transposeGrid = function(grid) {
     var tGrid = [];
@@ -114,7 +114,7 @@ $.event.special.tap.emitTapOnTaphold = false;
       var seqCell = document.createElement('div');
       $(seqCell).addClass('vertical sequence');
       $(seqRow).append(seqCell);
-    };
+    }
 
     $('.cell').css('background-color', function(index) {
       return gridData[getCoords(index).x][getCoords(index).y] % 2 === 1 ? 'black' : 'white';
@@ -150,7 +150,7 @@ $.event.special.tap.emitTapOnTaphold = false;
       $(this).css('color', function() {
         return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
       });
-    })
+    });
   };
 
   var createListeners = function() {
@@ -197,9 +197,9 @@ $.event.special.tap.emitTapOnTaphold = false;
 
   var toggleHelpButtonText = function() {
     if ($('.heading').hasClass('hidden'))  {
-      $('#help-btn').html('Help')
+      $('#help-btn').html('Help');
     } else {
-      $('#help-btn').html('Hide help')
+      $('#help-btn').html('Hide help');
     }
   };
 
@@ -208,7 +208,7 @@ $.event.special.tap.emitTapOnTaphold = false;
 
     if (cellContents(index) === 1) {
       $('.cell').eq(index).css('background-color', 'white');
-      cellContents(index, 0)
+      cellContents(index, 0);
     } else {
       $('.cell').eq(index).css('background-color', 'black');
       cellContents(index, 1);
@@ -266,7 +266,7 @@ $.event.special.tap.emitTapOnTaphold = false;
 
   var redo = function() {
     stackDo('redoStack');
-  }
+  };
 
   var stackDo = function(stackName) {
     var stack = JSON.parse(localStorage.getItem(stackName));

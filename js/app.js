@@ -132,17 +132,17 @@ $.event.special.tap.emitTapOnTaphold = false;
     a = a || []; // This method is sometimes called before a is defined.
     b = b || []; // This method is sometimes called before b is defined.
 
-    var good = true;
-    if (a.length === b.length) {
-      for (var i in a) {
-        if (a[i] != b[i]) {
-          good = false;
-        }
-      }
-    } else {
-      good = false;
+    if (a.length !== b.length) {
+      return false;
     }
-    return good;
+
+    for (var i in a) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   var updateSequences = function() {

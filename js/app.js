@@ -22,6 +22,62 @@ $.event.special.tap.emitTapOnTaphold = false;
       createListeners();
   };
 
+  var drawGrid = function() {
+    drawRows();
+    addColumnSequences();
+    setCellStates();
+  };
+
+  var drawRows = function() {
+    for (var rowIndex in gridData) {
+      var row = document.createElement('div');
+      $(row).addClass('row');
+      $('.grid').append(row);
+      drawCells(row, rowIndex);
+      addRowSequences(row);
+    }
+  };
+
+  var drawCells = function(row, rowIndex) {
+    for (var cellIndex in gridData[rowIndex]) {
+      var cell = document.createElement('div');
+      $(cell).addClass('cell');
+      $(row).append(cell);
+    }
+  };
+
+  var addRowSequences = function(row) {
+    var sequence = document.createElement('div');
+    $(sequence).addClass('sequence');
+    $(row).append(sequence);
+  };
+
+  var addColumnSequences = function() {
+    var seqRow = document.createElement('div');
+    $(seqRow).addClass('column-sequence');
+    $('.grid').append(seqRow);
+    for (var i in gridData) {
+      var seqCell = document.createElement('div');
+      $(seqCell).addClass('vertical sequence');
+      $(seqRow).append(seqCell);
+    }
+  };
+
+  var setCellStates = function() {
+    $('.cell').each( function(index) {
+      if (gridData[getCoords(index).x][getCoords(index).y] > 1) {
+        $(this).addClass('locked');
+      }
+    });
+    setCellColors();
+  };
+
+  var setCellColors = function() {
+    $('.cell').css('background-color', function(index) {
+      return gridData[getCoords(index).x][getCoords(index).y] % 2 === 1 ? 'black' : 'white';
+    });
+  };
+
   var loadLabels = function() {
     $.get('data/row-labels.dat', function(rowData) {
       rowLabels = JSON.parse(rowData);
@@ -88,38 +144,6 @@ $.event.special.tap.emitTapOnTaphold = false;
       good = false;
     }
     return good;
-  };
-
-  var drawGrid = function() {
-    for (var rowIndex in gridData) {
-      var row = document.createElement('div');
-      $(row).addClass('row');
-      $('.grid').append(row);
-      for (var cellIndex in gridData[rowIndex]) {
-        var cell = document.createElement('div');
-        $(cell).addClass('cell');
-        if (gridData[rowIndex][cellIndex] > 1) {
-          $(cell).addClass('locked');
-        }
-        $(row).append(cell);
-      }
-      var sequence = document.createElement('div');
-      $(sequence).addClass('sequence');
-      $(row).append(sequence);
-    }
-    var seqRow = document.createElement('div');
-    $(seqRow).addClass('column-sequence');
-    $('.grid').append(seqRow);
-    for (var i in gridData) {
-      var seqCell = document.createElement('div');
-      $(seqCell).addClass('vertical sequence');
-      $(seqRow).append(seqCell);
-    }
-
-    $('.cell').css('background-color', function(index) {
-      return gridData[getCoords(index).x][getCoords(index).y] % 2 === 1 ? 'black' : 'white';
-    });
-
   };
 
   var updateSequences = function() {

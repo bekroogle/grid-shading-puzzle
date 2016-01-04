@@ -145,6 +145,11 @@ $.event.special.tap.emitTapOnTaphold = false;
   };
 
   var updateSequences = function() {
+    drawRowSequences();
+    drawColumnSequences();
+  };
+
+  var drawRowSequences = function() {
     $('.sequence').each( function(index) {
       var seqArr = rowLabels[index];
       var realSeqArr = countRowSequences(gridData[index]);
@@ -156,7 +161,9 @@ $.event.special.tap.emitTapOnTaphold = false;
       $(this).html(seqStr);
       setNumberColor(this, seqArr, realSeqArr);
     });
+  };
 
+  var drawColumnSequences = function() {
     $('.vertical').each( function(index) {
       var seqArr = colLabels[index];
       var realSeqArr = countRowSequences(transposeGrid(gridData)[index]);
@@ -169,7 +176,7 @@ $.event.special.tap.emitTapOnTaphold = false;
       setNumberColor(this, seqArr, realSeqArr);
     });
   };
-
+  
   var setNumberColor = function(ctx, seqArr, realSeqArr) {
     $(ctx).css('color', function() {
       return listsMatch(seqArr, realSeqArr) ? 'green' : 'red';
